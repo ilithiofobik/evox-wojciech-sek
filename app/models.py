@@ -1,27 +1,17 @@
 from sqlalchemy import (
     Column,
-    Date,
-    Float,
     Integer,
-    LargeBinary,
-    SmallInteger,
     String,
-    Table,
-    Text,
-    text,
     Sequence,
     CheckConstraint
 )
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import NullType
 
 Base = declarative_base()
 metadata = Base.metadata
 
-
-MESSAGE_ID_SEQ = Sequence('message_id_seq')  # define sequence explicitly
-ACCOUNT_ID_SEQ = Sequence('account_id_seq')  # define sequence explicitly
-
+MESSAGE_ID_SEQ = Sequence('message_id_seq')
+ACCOUNT_ID_SEQ = Sequence('account_id_seq')
 
 
 class Message(Base):

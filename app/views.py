@@ -1,5 +1,4 @@
 from hashlib import sha512
-from typing import List
 import string
 import random
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
@@ -44,14 +43,16 @@ def logout(session_token: str = Cookie(None)):
 
 
 @router.post("/messages", status_code=status.HTTP_201_CREATED)
-async def create_message(new_message: schemas.MessageOnlyContent, session_token: str = Cookie(None), db: Session = Depends(get_db)):
+async def create_message(new_message: schemas.MessageOnlyContent, session_token: str = Cookie(None),
+                         db: Session = Depends(get_db)):
     if session_token not in router.session_tokens:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorised")
     return crud.create_message(db, new_message)
 
 
 @router.put("/messages", status_code=status.HTTP_202_ACCEPTED)
-async def update_message(new_message: schemas.MessageNoCounter, session_token: str = Cookie(None), db: Session = Depends(get_db)):
+async def update_message(new_message: schemas.MessageNoCounter, session_token: str = Cookie(None),
+                         db: Session = Depends(get_db)):
     if session_token not in router.session_tokens:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorised")
     if not crud.get_messages_id(db, new_message.MessageID):

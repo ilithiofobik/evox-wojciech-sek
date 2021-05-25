@@ -6,7 +6,7 @@ from . import models, schemas
 
 
 def check_account(db: Session, login: str, password_hash: str):
-    return db.query(models.Account).filter(models.Account.PasswordHash == password_hash)\
+    return db.query(models.Account).filter(models.Account.PasswordHash == password_hash) \
         .filter(models.Account.Login == login).first()
 
 
