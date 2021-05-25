@@ -1,7 +1,7 @@
 from fastapi import status
 from fastapi.testclient import TestClient
-from app.app.main import app
-from app.app.schemas import MessageOnlyContent, MessageNoCounter
+from app import app
+from app.schemas import MessageOnlyContent, MessageNoCounter
 
 client = TestClient(app)
 
