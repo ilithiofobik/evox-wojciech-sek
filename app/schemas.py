@@ -1,42 +1,32 @@
 from pydantic import BaseModel, PositiveInt, constr, NonNegativeInt
 
 
-class MessageOnlyContent(BaseModel):
-    Content: constr(max_length=160)
-
+class OrmModel(BaseModel):
     class Config:
         orm_mode = True
 
 
-class MessageNoCounter(BaseModel):
+class MessageOnlyContent(OrmModel):
+    Content: constr(max_length=160)
+
+
+class MessageNoCounter(OrmModel):
     MessageID: PositiveInt
     Content: constr(max_length=160)
 
-    class Config:
-        orm_mode = True
 
-
-class MessageNoID(BaseModel):
+class MessageNoID(OrmModel):
     Content: constr(max_length=160)
     Counter: NonNegativeInt
 
-    class Config:
-        orm_mode = True
 
-
-class Message(BaseModel):
+class Message(OrmModel):
     MessageID: PositiveInt
     Content: constr(max_length=160)
     Counter: NonNegativeInt
 
-    class Config:
-        orm_mode = True
 
-
-class Account(BaseModel):
+class Account(OrmModel):
     AccountID: PositiveInt
     Login: constr(max_length=30)
     PasswordHash: constr(max_length=128)
-
-    class Config:
-        orm_mode = True

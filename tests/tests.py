@@ -43,3 +43,19 @@ def test_authorised():
     assert response.status_code == status.HTTP_202_ACCEPTED
     response = client.delete(f"/messages/{id}")
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_logout():
+    response = client.delete("/logout")
+    assert response.status_code == status.HTTP_202_ACCEPTED
+    response = client.delete("/logout")
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+def test_unauthorised2():
+    response = client.post("/messages", json=MessageOnlyContent(Content="Lorem ipsum!").dict())
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    response = client.put("/messages", json=MessageNoCounter(MessageID=1, Content="Lorem ipsum!").dict())
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    response = client.delete("/messages/1")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED

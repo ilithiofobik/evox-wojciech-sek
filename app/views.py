@@ -15,7 +15,6 @@ router.session_tokens = []
 security = HTTPBasic()
 
 
-# uwierzytelnianie
 def random_token():
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for _ in range(32))
@@ -35,7 +34,15 @@ def get_auth(response: Response, login: str, password: str, db: Session = Depend
     return {"message": "welcome"}
 
 
-# tworzenie
+@router.delete("/logout", status_code=status.HTTP_202_ACCEPTED)
+def logout(session_token: str = Cookie(None)):
+    if session_token not in router.session_tokens:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    router.session_tokens.remove(session_token)
+    return {"message": "goodbye"}
+
+
 @router.post("/messages", status_code=status.HTTP_201_CREATED)
 async def create_message(new_message: schemas.MessageOnlyContent, session_token: str = Cookie(None), db: Session = Depends(get_db)):
     if session_token not in router.session_tokens:
@@ -43,7 +50,6 @@ async def create_message(new_message: schemas.MessageOnlyContent, session_token:
     return crud.create_message(db, new_message)
 
 
-# nadpisywanie
 @router.put("/messages", status_code=status.HTTP_202_ACCEPTED)
 async def update_message(new_message: schemas.MessageNoCounter, session_token: str = Cookie(None), db: Session = Depends(get_db)):
     if session_token not in router.session_tokens:
@@ -53,7 +59,6 @@ async def update_message(new_message: schemas.MessageNoCounter, session_token: s
     return crud.update_message(db, new_message)
 
 
-# usuwanie
 @router.delete("/messages/{message_id}", status_code=status.HTTP_202_ACCEPTED)
 async def update_message(message_id: PositiveInt, session_token: str = Cookie(None), db: Session = Depends(get_db)):
     if session_token not in router.session_tokens:
@@ -69,8 +74,3 @@ async def get_messages_id(message_id: PositiveInt, db: Session = Depends(get_db)
     if message:
         return message
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
-
-@router.get("/accounts", response_model=List[schemas.Account])
-async def get_accounts(db: Session = Depends(get_db)):
-    return crud.get_accounts(db)
