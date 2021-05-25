@@ -1,2 +1,2 @@
 # evox-wsek
-Zadanie rekrutacyjne do Daftocode.
+Zadanie rekrutacyjne do Daftcode.
