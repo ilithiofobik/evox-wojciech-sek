@@ -145,6 +145,8 @@ available  [here](https://evox-wsek.herokuapp.com
     - **Description**:
 
       This method updates a message with given `Messageid` and new `Content`.
+    
+      It changes the `Counter` value to 0.
 
       It requires the content and id of the message and requires the user to be authorised (logged in).
 
