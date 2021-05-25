@@ -62,10 +62,6 @@ async def update_message(message_id: PositiveInt, session_token: str = Cookie(No
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return crud.delete_message(db, message_id)
 
-@router.get("/messages", response_model=List[schemas.Message])
-async def get_messages(db: Session = Depends(get_db)):
-    return crud.get_messages(db)
-
 
 @router.get("/messages/{message_id}", response_model=schemas.MessageNoID)
 async def get_messages_id(message_id: PositiveInt, db: Session = Depends(get_db)):
@@ -78,8 +74,3 @@ async def get_messages_id(message_id: PositiveInt, db: Session = Depends(get_db)
 @router.get("/accounts", response_model=List[schemas.Account])
 async def get_accounts(db: Session = Depends(get_db)):
     return crud.get_accounts(db)
-
-@router.get("/max")
-async def get_max(db: Session = Depends(get_db)):
-    return crud.return_max(db)
-

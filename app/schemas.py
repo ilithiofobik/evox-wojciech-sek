@@ -2,7 +2,10 @@ from pydantic import BaseModel, PositiveInt, constr, NonNegativeInt
 
 
 class MessageOnlyContent(BaseModel):
-    Content: str
+    Content: constr(max_length=160)
+
+    class Config:
+        orm_mode = True
 
 
 class MessageNoCounter(BaseModel):
@@ -11,7 +14,6 @@ class MessageNoCounter(BaseModel):
 
     class Config:
         orm_mode = True
-
 
 
 class MessageNoID(BaseModel):
